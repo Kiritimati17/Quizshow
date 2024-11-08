@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Team 1 Eingabe</title>
+    <style>
+        /* Styling */
+    </style>
+</head>
+<body>
+    <h2>Antwort eingeben für Team 1:</h2>
+    <input type="text" id="answerInput" placeholder="Deine Antwort..." oninput="submitAnswer()">
+
+    <script>
+        function submitAnswer() {
+            const answer = document.getElementById("answerInput").value;
+            fetch('submit_answer.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ team: "team1", answer: answer })
+            });
+        }
+    </script>
+</body>
+</html>
