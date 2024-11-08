@@ -2,24 +2,47 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Team 2 Eingabe</title>
+    <title>Team 2 - Quiz</title>
     <style>
-        /* Styling */
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Arial', sans-serif;
+            background-color: #2e2e2e;
+            color: #e0e0e0;
+        }
+        .answer-box {
+            font-size: 22px;
+            padding: 15px;
+            margin-top: 20px;
+            border: 2px solid #00e5ff;
+            border-radius: 12px;
+            background-color: rgba(46, 46, 46, 0.8);
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+        }
     </style>
 </head>
 <body>
-    <h2>Antwort eingeben für Team 2:</h2>
-    <input type="text" id="answerInput" placeholder="Deine Antwort..." oninput="submitAnswer()">
+    <h2>Team 2 - Deine Antwort</h2>
+    <div id="team1Answer" class="answer-box">Antwort von Team 2 wird hier angezeigt...</div>
 
     <script>
-        function submitAnswer() {
-            const answer = document.getElementById("answerInput").value;
-            fetch('submit_answer.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ team: "team2", answer: answer })
-            });
+        // Funktion zum Abrufen der Antworten aus answers.json
+        function fetchAnswer() {
+            fetch('answers.json')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("team1Answer").innerText = data.team2 || "Noch keine Antwort";
+                });
         }
+
+        // Aktualisiere die Antwort alle 2 Sekunden
+        setInterval(fetchAnswer, 2000);
     </script>
 </body>
 </html>
