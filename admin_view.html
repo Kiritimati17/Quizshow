@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Ansicht - Alle Antworten</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Arial', sans-serif;
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+        }
+        .answer-box {
+            font-size: 22px;
+            padding: 15px;
+            margin: 10px;
+            border: 2px solid #00e5ff;
+            border-radius: 12px;
+            background-color: rgba(30, 30, 30, 0.8);
+            width: 80%;
+            max-width: 600px;
+        }
+        h2 {
+            color: #00e5ff;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Alle Antworten der Teams</h2>
+    <div id="adminTeam1Answer" class="answer-box">Antwort von Team 1 wird hier angezeigt...</div>
+    <div id="adminTeam2Answer" class="answer-box">Antwort von Team 2 wird hier angezeigt...</div>
+    <div id="adminTeam3Answer" class="answer-box">Antwort von Team 3 wird hier angezeigt...</div>
+    <div id="adminTeam4Answer" class="answer-box">Antwort von Team 4 wird hier angezeigt...</div>
+
+    <script>
+        // Funktion zum Abrufen der Antworten aus answers.json
+        function fetchAllAnswers() {
+            fetch('answers.json')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("adminTeam1Answer").innerText = data.team1 || "Noch keine Antwort";
+                    document.getElementById("adminTeam2Answer").innerText = data.team2 || "Noch keine Antwort";
+                    document.getElementById("adminTeam3Answer").innerText = data.team3 || "Noch keine Antwort";
+                    document.getElementById("adminTeam4Answer").innerText = data.team4 || "Noch keine Antwort";
+                });
+        }
+
+        // Antworten alle 2 Sekunden aktualisieren
+        setInterval(fetchAllAnswers, 2000);
+    </script>
+</body>
+</html>
