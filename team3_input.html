@@ -2,22 +2,73 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Team 3 Eingabe</title>
+    <title>Team 3 - Antwort eingeben</title>
     <style>
-        /* Styling */
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Arial', sans-serif;
+            background-color: #2e2e2e;
+            color: #e0e0e0;
+        }
+        .input-box {
+            font-size: 18px;
+            padding: 10px;
+            margin: 10px;
+            border: 2px solid #00e5ff;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 600px;
+        }
+        .submit-button {
+            font-size: 18px;
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: #00e5ff;
+            color: #1e1e1e;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <h2>Antwort eingeben für Team 3:</h2>
-    <input type="text" id="answerInput" placeholder="Deine Antwort..." oninput="submitAnswer()">
+    <h2>Team 1 - Antwort eingeben</h2>
+    <input type="text" id="team3AnswerInput" class="input-box" placeholder="Gib deine Antwort hier ein..." />
+    <button class="submit-button" onclick="submitAnswer()">Antwort absenden</button>
 
     <script>
         function submitAnswer() {
-            const answer = document.getElementById("answerInput").value;
-            fetch('submit_answer.php', {
+            const answer = document.getElementById("team3AnswerInput").value;
+            
+            // Überprüfen, ob eine Antwort eingegeben wurde
+            if (answer.trim() === "") {
+                alert("Bitte eine Antwort eingeben.");
+                return;
+            }
+
+            // Antwort an den Server senden
+            fetch('/save_answer.php', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ team: "team3", answer: answer })
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ team: 'team3', answer: answer })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Antwort gespeichert!");
+                } else {
+                    alert("Fehler beim Speichern der Antwort.");
+                }
+            })
+            .catch(error => {
+                console.error('Fehler:', error);
+                alert("Fehler beim Verbinden mit dem Server.");
             });
         }
     </script>
