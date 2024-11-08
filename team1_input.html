@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Team 1 - Quiz</title>
+    <title>Team 1 - Antwort eingeben</title>
     <style>
         body {
             display: flex;
@@ -14,35 +14,63 @@
             background-color: #2e2e2e;
             color: #e0e0e0;
         }
-        .answer-box {
-            font-size: 22px;
-            padding: 15px;
-            margin-top: 20px;
+        .input-box {
+            font-size: 18px;
+            padding: 10px;
+            margin: 10px;
             border: 2px solid #00e5ff;
-            border-radius: 12px;
-            background-color: rgba(46, 46, 46, 0.8);
-            text-align: center;
+            border-radius: 5px;
             width: 80%;
             max-width: 600px;
+        }
+        .submit-button {
+            font-size: 18px;
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: #00e5ff;
+            color: #1e1e1e;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <h2>Team 1 - Deine Antwort</h2>
-    <div id="team1Answer" class="answer-box">Antwort von Team 1 wird hier angezeigt...</div>
+    <h2>Team 1 - Antwort eingeben</h2>
+    <input type="text" id="team1AnswerInput" class="input-box" placeholder="Gib deine Antwort hier ein..." />
+    <button class="submit-button" onclick="submitAnswer()">Antwort absenden</button>
 
     <script>
-        // Funktion zum Abrufen der Antworten aus answers.json
-        function fetchAnswer() {
-            fetch('answers.json')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById("team1Answer").innerText = data.team1 || "Noch keine Antwort";
-                });
-        }
+        function submitAnswer() {
+            const answer = document.getElementById("team1AnswerInput").value;
+            
+            // Überprüfen, ob eine Antwort eingegeben wurde
+            if (answer.trim() === "") {
+                alert("Bitte eine Antwort eingeben.");
+                return;
+            }
 
-        // Aktualisiere die Antwort alle 2 Sekunden
-        setInterval(fetchAnswer, 2000);
+            // Antwort an den Server senden
+            fetch('/save_answer.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ team: 'team1', answer: answer })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Antwort gespeichert!");
+                } else {
+                    alert("Fehler beim Speichern der Antwort.");
+                }
+            })
+            .catch(error => {
+                console.error('Fehler:', error);
+                alert("Fehler beim Verbinden mit dem Server.");
+            });
+        }
     </script>
 </body>
 </html>
